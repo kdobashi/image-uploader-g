@@ -1,8 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
+import { DbLogic } from './count'
 import './App.css';
 
 function App() {
+
+  var dbLogic: DbLogic = new DbLogic();
+  dbLogic.open();
+  
   return (
     <div className="App">
       <header className="App-header">
