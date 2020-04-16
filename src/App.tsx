@@ -1,13 +1,25 @@
 import React from 'react';
 import logo from './logo.svg';
-import { DbLogic } from './count'
+import { DbLogic, ImgObject } from './dbLogic'
 import './App.css';
+import Button from '@material-ui/core/Button';
 
 function App() {
 
-  var dbLogic: DbLogic = new DbLogic();
-  dbLogic.open();
+  var dbLogic!: DbLogic;
+  dbLogic = new DbLogic();
+  const imgObject : ImgObject = {
+    key: '1',
+    url: 'aaaa',
+  }
   
+  var testFunc = function(){
+    dbLogic.update(imgObject);
+  }
+
+  setTimeout(testFunc, 5000);
+  
+
   return (
     <div className="App">
       <header className="App-header">
@@ -23,6 +35,9 @@ function App() {
         >
           Learn React
         </a>
+        <Button onClick={()=>{}}>
+          
+        </Button>
       </header>
     </div>
   );
