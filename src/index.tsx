@@ -15,7 +15,7 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.register();
-serviceWorker.register();
+serviceWorker.unregister();
   // .then((registration) => {
   //   console.log('ServiceWorker registration successful with scope: ', registration.scope);
   // })

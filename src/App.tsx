@@ -1,10 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import { DbLogic, ImgObject } from './dbLogic'
-import './App.css';
+import { CardMedia, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import React, { useState } from 'react';
+import './App.css';
+import { DbLogic, ImgObject } from './dbLogic';
+
+// スタイル
+const useStyles = makeStyles(() => ({
+  input: {
+    display: "block"
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+  const [src, setSrc] = useState<string>('');
 
   const imgObject : ImgObject = {
     key: '1',
@@ -28,25 +37,32 @@ function App() {
       console.log(err);
     });
 
+    const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+      var file! : File;
+      console.log(e.target.files);
+      if(e.target.files == null || e.target.files.length <= 0) return; 
+      file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setSrc(reader.result as string);
+      }
+    }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Button onClick={()=>{}}>
-          
-        </Button>
-      </header>
+      <CardMedia
+        component="img"
+        image={src}
+      />
+      <input
+        accept="image/*"
+        className={classes.input}
+        id="contained-button-file"
+        multiple
+        type="file"
+        onChange={uploadImg}
+      />
     </div>
   );
 }
