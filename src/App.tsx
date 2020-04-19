@@ -6,19 +6,27 @@ import Button from '@material-ui/core/Button';
 
 function App() {
 
-  var dbLogic!: DbLogic;
-  dbLogic = new DbLogic();
   const imgObject : ImgObject = {
     key: '1',
     url: 'aaaa',
   }
-  
-  var testFunc = function(){
-    dbLogic.update(imgObject);
-  }
 
-  setTimeout(testFunc, 5000);
-  
+  var dbLogic!: DbLogic;
+  dbLogic = new DbLogic();
+  dbLogic.open()
+    .then((result) => {
+      console.log(result);
+      dbLogic.update(imgObject)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   return (
     <div className="App">
