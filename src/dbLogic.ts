@@ -10,11 +10,9 @@ export class DbLogic {
     private db!: IDBDatabase;
 
     // インスタンスの取得
-    public static getInstance(): DbLogic
-    {
+    public static getInstance(): DbLogic {
         // インスタンスがない場合のみ新しくnewする
         if(!this._instance) this._instance = new DbLogic();
-        
         return this._instance;
     }
     

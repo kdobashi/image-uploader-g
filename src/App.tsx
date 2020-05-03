@@ -20,10 +20,10 @@ function App() {
     url: 'bbb',
   }
   
-  var dbLogic!: DbLogic;
-  dbLogic = DbLogic.getInstance();
-  
-  
+  // TODO: open処理を先に動かしておく必要があるため、
+  // シングルトンインスタンス生成をserviceWorkerで動かす
+  DbLogic.getInstance();
+
   // 写真を
   const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.files == null || e.target.files.length <= 0) return;
@@ -36,8 +36,8 @@ function App() {
         key: '1',
         url: reader.result as string,
       }
-      dbLogic.update(imgObject);
-      dbLogic.get('1');
+      DbLogic.getInstance().update(imgObject);
+      DbLogic.getInstance().get('1');
     }
   }
 
