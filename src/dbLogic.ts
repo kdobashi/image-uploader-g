@@ -53,15 +53,31 @@ export class DbLogic {
                 id: imgObject.key,
                 imageUrl: imgObject.url,
             });
+            console.log(imgObject.url);
     
             putReq.onsuccess = (event) => {
+                console.log('更新成功');
                 resolve('更新成功');
             };
 
             putReq.onerror = () => {
+                console.log('更新失敗');
                 reject('更新失敗');
             }
         })
+    }
+
+    get(key: string) : any {
+        var returnString = '';
+        var trans = this.db.transaction(this.storeName, "readonly");
+        var store = trans.objectStore(this.storeName);
+        var readReq = store.get(key);
+        readReq.onsuccess = (event) => {
+            console.log(readReq.result);
+            console.log(readReq.result.imageUrl);
+            returnString = readReq.result.imageUrl as string;
+        }
+        return returnString;
     }
 }
 

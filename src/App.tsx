@@ -15,9 +15,9 @@ function App() {
   const classes = useStyles();
   const [src, setSrc] = useState<string>('');
 
-  const imgObject : ImgObject = {
+  const imgObjectSample : ImgObject = {
     key: '1',
-    url: 'aaaa',
+    url: 'bbb',
   }
 
   var dbLogic!: DbLogic;
@@ -25,7 +25,7 @@ function App() {
   dbLogic.open()
     .then((result) => {
       console.log(result);
-      dbLogic.update(imgObject)
+      dbLogic.update(imgObjectSample)
         .then((result) => {
           console.log(result);
         })
@@ -38,14 +38,18 @@ function App() {
     });
 
     const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-      var file! : File;
-      console.log(e.target.files);
-      if(e.target.files == null || e.target.files.length <= 0) return; 
-      file = e.target.files[0];
+      if(e.target.files == null || e.target.files.length <= 0) return;
+      var file = e.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         setSrc(reader.result as string);
+        var imgObject : ImgObject = {
+          key: '1',
+          url: reader.result as string,
+        }
+        dbLogic.update(imgObject);
+        dbLogic.get('1');
       }
     }
 
