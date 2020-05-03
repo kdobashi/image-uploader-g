@@ -1,15 +1,29 @@
 export class DbLogic {
+
+    // インスタンス
+    private static _instance: DbLogic;
+
     public dbVersion: number = 2;
     public storeName: string = 'img';
     public dbName: string = 'sampleDBtest';
     public count: number = 0;
     private db!: IDBDatabase;
-    
-    constructor() {
 
+    // インスタンスの取得
+    public static getInstance(): DbLogic
+    {
+        // インスタンスがない場合のみ新しくnewする
+        if(!this._instance) this._instance = new DbLogic();
+        
+        return this._instance;
     }
     
-    open(): Promise<string> {
+    private constructor() {
+        this.open();
+    }
+    
+    private open(): Promise<string> {
+        console.log('open処理発火');
         return new Promise<string>((resolve, reject) => {
                 //promise objの中で実際の処理をする
                     //　DB名を指定して接続
@@ -17,7 +31,7 @@ export class DbLogic {
             // 接続に失敗
             openReq.onerror = (event) => {
                 console.log(event);
-                reject('接続失敗');
+                reject('DB接続失敗');
             }
 
             //DBのバージョン更新(DBの新規作成も含む)時のみ実行
@@ -26,7 +40,7 @@ export class DbLogic {
                 const objectStore = this.db.createObjectStore(this.storeName, { keyPath: 'id' })
                 objectStore.createIndex("id", "id", { unique: true });
                 objectStore.createIndex("imageUrl", "imagUrl", { unique: false });
-                console.log('DB更新');
+                console.log('DB接続時スキーマアップデート');
             }
             //onupgradeneededの後に実行。更新がない場合はこれだけ実行`
             openReq.onsuccess = (event) => {

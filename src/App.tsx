@@ -19,39 +19,27 @@ function App() {
     key: '1',
     url: 'bbb',
   }
-
+  
   var dbLogic!: DbLogic;
-  dbLogic = new DbLogic();
-  dbLogic.open()
-    .then((result) => {
-      console.log(result);
-      dbLogic.update(imgObjectSample)
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-    const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if(e.target.files == null || e.target.files.length <= 0) return;
-      var file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setSrc(reader.result as string);
-        var imgObject : ImgObject = {
-          key: '1',
-          url: reader.result as string,
-        }
-        dbLogic.update(imgObject);
-        dbLogic.get('1');
+  dbLogic = DbLogic.getInstance();
+  
+  
+  // 写真を
+  const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files == null || e.target.files.length <= 0) return;
+    var file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setSrc(reader.result as string);
+      var imgObject : ImgObject = {
+        key: '1',
+        url: reader.result as string,
       }
+      dbLogic.update(imgObject);
+      dbLogic.get('1');
     }
+  }
 
   return (
     <div className="App">
