@@ -1,8 +1,8 @@
 import { CardMedia, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
-import './App.css';
-import { DbLogic, ImgObject } from './dbLogic';
+import './../App.css';
+import { DbLogic, ImgObject } from '../dblogic/dbLogic';
 
 // スタイル
 const useStyles = makeStyles(() => ({
@@ -15,10 +15,10 @@ function App() {
   const classes = useStyles();
   const [src, setSrc] = useState<string>('');
 
-  const imgObjectSample : ImgObject = {
-    key: '1',
-    url: 'bbb',
-  }
+  // const imgObjectSample : ImgObject = {
+  //   key: '1',
+  //   imageBinary: 'bbb',
+  // }
   
   // TODO: open処理を先に動かしておく必要があるため、
   // シングルトンインスタンス生成をserviceWorkerで動かす
@@ -34,10 +34,11 @@ function App() {
       setSrc(reader.result as string);
       var imgObject : ImgObject = {
         key: '1',
-        url: reader.result as string,
+        imageBinary: reader.result as string,
       }
       DbLogic.getInstance().update(imgObject);
-      DbLogic.getInstance().get('1');
+      // DbLogic.getInstance().getSingle('1');
+      DbLogic.getInstance().getAll();
     }
   }
 
