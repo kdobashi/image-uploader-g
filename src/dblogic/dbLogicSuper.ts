@@ -59,29 +59,54 @@ export abstract class DbLogicSuper {
         });
     }
 
-    update<T> (data: T): Promise<string> {
+    putSingle<T> (data: T): Promise<string> {
         return new Promise<string> ((resolve, reject) => {
             this.open()
                 .then((db: IDBDatabase) => {
                     var table = db.transaction(this.tableInfo.tableName, AccessModeEnum.ReadWrite).objectStore(this.tableInfo.tableName);
                     var putReq = table.put(data);
-            
+                    
                     putReq.onsuccess = () => {
                         resolve('更新成功');
+                        db.close();
                     };
 
                     putReq.onerror = (event) => {
                         reject(event);
+                        db.close();
                     };
-
-                    console.log('close処理')
-                    db.close();
                 })
                 .catch((event) => {
                     reject(event);
                 })
         })
     }
+
+    // 負荷確認時に途中で止まってしまったため、コメントアウト（400毎写真アップロード時）
+    // putMultiple<T> (objects: Array<T>) : Promise<void> {
+    //     return new Promise<void> ((resolve, reject) => {
+    //         this.open()
+    //             .then((db: IDBDatabase) => {
+    //                 var table = db.transaction(this.tableInfo.tableName, AccessModeEnum.ReadWrite).objectStore(this.tableInfo.tableName);
+    //                 var successNum: number = 0;
+    //                 objects.map(o => {
+    //                     var putReq = table.put(o);
+    //                     putReq.onsuccess = () => {
+    //                         successNum++;
+    //                         console.log(putReq.result);
+    //                         if(successNum == objects.length) resolve(); db.close();
+    //                     }
+
+    //                     putReq.onerror = (event) => {
+    //                         reject(event);
+    //                     }
+    //                 })
+    //             })
+    //             .catch((event) => {
+    //                 reject(event);
+    //             })
+    //     })
+    // }
 
     getSingle<T> (id: string) : Promise<T> {
         return new Promise<T> ((resolve, reject) => {
@@ -104,40 +129,40 @@ export abstract class DbLogicSuper {
         })
     }
 
-    getSingleForMultiple<T> (id: string, db: IDBDatabase) : Promise<T> {
-        return new Promise<T> ((resolve, reject) => {
-            var table = db.transaction(this.tableInfo.tableName, AccessModeEnum.ReadOnly).objectStore(this.tableInfo.tableName);
-            var readReq = table.get(id);
-            readReq.onsuccess = () => {
-                resolve(readReq.result as T);
-            }
-            readReq.onerror = (event) => {
-                reject(event);
-            }
-        });
-    }
-
-    getMultiple<T> (ids: Array<string>) : Promise<Array<T>> {
-        return new Promise<Array<T>> ((resolve, reject) => {
-            this.open()
-                .then((db: IDBDatabase) => {
-                    var returnObj = new Array<T>();
-                    ids.map(i => {
-                        this.getSingleForMultiple(i, db)
-                            .then((result) => {
-                                returnObj.push(result as T);
-                                if(returnObj.length == ids.length) resolve(returnObj);
-                            }).catch((event) => {
-                                reject(event);
-                            });
-                    })
-                    db.close();
-                })
-                .catch((event) => {
-                    reject(event);
-                });
-        });
-    }
+    // 400枚の写真を取得したところ、getSingleをループした時と速さが変わらなかったためコメントアウト
+    // getSingleForMultiple<T> (id: string, db: IDBDatabase) : Promise<T> {
+    //     return new Promise<T> ((resolve, reject) => {
+    //         var table = db.transaction(this.tableInfo.tableName, AccessModeEnum.ReadOnly).objectStore(this.tableInfo.tableName);
+    //         var readReq = table.get(id);
+    //         readReq.onsuccess = () => {
+    //             resolve(readReq.result as T);
+    //         }
+    //         readReq.onerror = (event) => {
+    //             reject(event);
+    //         }
+    //     });
+    // }
+    // getMultiple<T> (ids: Array<string>) : Promise<Array<T>> {
+    //     return new Promise<Array<T>> ((resolve, reject) => {
+    //         this.open()
+    //             .then((db: IDBDatabase) => {
+    //                 var returnObjs = new Array<T>();
+    //                 ids.map(i => {
+    //                     this.getSingleForMultiple(i, db)
+    //                         .then((result) => {
+    //                             returnObjs.push(result as T);
+    //                             if(returnObjs.length == ids.length) resolve(returnObjs); db.close();
+    //                         }).catch((event) => {
+    //                             reject(event);
+    //                             db.close();
+    //                         });
+    //                 })
+    //             })
+    //             .catch((event) => {
+    //                 reject(event);
+    //             });
+    //     });
+    // }
 
     getAll<T> () : Promise<Array<T>> {
         return new Promise<Array<T>> ((resolve, reject) => {
@@ -146,7 +171,8 @@ export abstract class DbLogicSuper {
                     var table = db.transaction(this.tableInfo.tableName, AccessModeEnum.ReadOnly).objectStore(this.tableInfo.tableName);
                     var readReq = table.getAll();
                     readReq.onsuccess = () => {
-                        resolve(readReq.result as Array<T>); 
+                        resolve(readReq.result as Array<T>);
+                        db.close();
                     }
                     readReq.onerror = (event) => {
                         reject(event);
@@ -166,11 +192,12 @@ export abstract class DbLogicSuper {
                     var deleteReq = table.delete(id);
                     deleteReq.onsuccess = () => {
                         resolve();
+                        db.close();
                     }
                     deleteReq.onerror = event => {
                         reject(event);
+                        db.close();
                     }
-                    db.close();
                 })
                 .catch((event) => {
                     reject(event);
@@ -186,9 +213,11 @@ export abstract class DbLogicSuper {
                     var deleteReq = table.clear();
                     deleteReq.onsuccess = () => {
                         resolve();
+                        db.close();
                     }
                     deleteReq.onerror = event => {
                         reject(event);
+                        db.close();
                     }
                 })
                 .catch((event) => {

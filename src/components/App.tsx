@@ -1,8 +1,9 @@
-import { CardMedia, makeStyles } from '@material-ui/core';
+import { CardMedia, makeStyles, Container, Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './../App.css';
 import { ImageDbLogic, ImgObject } from '../dblogic/imageDbLogic';
+import { ImageContainer } from '../containers/imageContainer';
 
 // スタイル
 const useStyles = makeStyles(() => ({
@@ -13,47 +14,30 @@ const useStyles = makeStyles(() => ({
 
 function App() {
   const classes = useStyles();
-  const [src, setSrc] = useState<string>('');
+  const imageContainer = ImageContainer.useContainer();
 
-  // 写真を
-  const uploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(e.target.files == null || e.target.files.length <= 0) return;
-    var file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setSrc(reader.result as string);
-      var imgObject : ImgObject = {
-        id: '1',
-        imageBinary: reader.result as string,
-      }
-      ImageDbLogic.getInstance().update(imgObject);
-      ImageDbLogic.getInstance().getAll().then(result => {
-        
-      });
-
-      var tempArray: Array<string> = ['1','2'];
-      ImageDbLogic.getInstance().getMultiple(tempArray)
-        .then(aaa => {
-          console.log(aaa);
-        });
-    }
-  }
+  useEffect(() => {
+    imageContainer.getAllImage();
+  }, [])
 
   return (
     <div className="App">
-      <CardMedia
-        component="img"
-        image={src}
-      />
       <input
         accept="image/*"
         className={classes.input}
         id="contained-button-file"
         multiple
         type="file"
-        onChange={uploadImg}
+        onChange={imageContainer.addImage}
       />
+      <Box>全{imageContainer.imgObjects.length}件</Box>
+      {imageContainer.imgObjects.map(i => 
+          <CardMedia
+            key={i.id}
+            component="img"
+            image={i.imageBinary}
+          />
+      )}
     </div>
   );
 }
