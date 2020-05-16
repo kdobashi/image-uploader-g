@@ -4,10 +4,12 @@ import App from './components/App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { ImageContainer } from './containers/imageContainer';
+import Utility from './utils/utility';
 
 ReactDOM.render(
   <React.StrictMode>
     <ImageContainer.Provider>
+      <Utility />
       <App />
     </ImageContainer.Provider>
   </React.StrictMode>,

@@ -12,11 +12,17 @@ const objStoreInfo: IDBObjectStoreParameters = {
 const indexesInfo: Array<IndexInfo> = [
     { name: 'id', keyPath: 'id', options: {unique: true}},
     { name: 'image', keyPath: 'imageBinary', options: {unique: false}},
+    { name: 'date', keyPath: 'date', options: {unique: false}},
+    { name: 'amount', keyPath: 'amount', options: {unique: false}},
+    { name: 'note', keyPath: 'note', options: {unique: false}},
 ]
 
 export type ImgObject ={
     id: string,
     imageBinary: string,
+    date: Date | null,
+    amount: string | null,
+    note: string | null,
 }
 
 export class ImageDbLogic extends DbLogicSuper {
@@ -33,10 +39,6 @@ export class ImageDbLogic extends DbLogicSuper {
     
     private constructor() {
         super(new TableInfo(dbVersion, dbName, tableName, objStoreInfo, indexesInfo));
-    }
-
-    public openImageTable(){
-        this.open();
     }
 }
 
