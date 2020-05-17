@@ -23,7 +23,7 @@ const useImageContainer = () => {
         if(e.target.files == null || e.target.files.length <= 0) return;
         
         IndicatorStore.openIndicator();
-        Array.from(e.target.files).map(file => {
+        Array.from(e.target.files).forEach(file => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {

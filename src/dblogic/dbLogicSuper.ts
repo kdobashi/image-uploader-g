@@ -45,7 +45,7 @@ export abstract class DbLogicSuper {
             openReq.onupgradeneeded = (event) => {
                 this.db = (event.target as IDBRequest).result;
                 const objectTable = this.db.createObjectStore(this.tableInfo.tableName, this.tableInfo.objStoreInfo)
-                this.tableInfo.indexesInfo.map(i => {
+                this.tableInfo.indexesInfo.forEach(i => {
                     objectTable.createIndex(i.name, i.keyPath, i.options);
                 });
                 console.log('DB接続時スキーマアップデート');
