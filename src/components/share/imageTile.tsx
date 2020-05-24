@@ -9,6 +9,19 @@ type Props = {
 
 // スタイル
 const useStyles = makeStyles(() => ({
+    imageBox: {
+        width:"100%",
+        height:"auto",
+        paddingTop:"100%",
+        position:"relative",
+    },
+    imageSpan: {
+        position:"absolute",
+        top:"0",
+        right:"0",
+        bottom:"0",
+        left:"0",
+    }
     
   }));
 
@@ -26,15 +39,14 @@ const ImageTile: React.FC<Props> = (props: Props) => {
     return (
         <>
             <ImageDialog isOpen={isOpen} imageBinary={props.imageBinary} onClose={onClose} />
-            <Box>
+            <Box className={classes.imageBox}><span className={classes.imageSpan}>
                 <CardMedia
-                    className={classes.imageBox}
                     key={props.id}
                     component="img"
                     image={props.imageBinary}
                     onClick={onClickImage}
                 />
-            </Box>
+            </span></Box>
         </>
     )
 }
