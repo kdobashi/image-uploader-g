@@ -1,4 +1,4 @@
-import { CardMedia, makeStyles, Container, Box, TextField, InputAdornment } from '@material-ui/core';
+import { CardMedia, makeStyles, Container, Box, TextField, InputAdornment, ButtonBase } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import React, { useState, useEffect } from 'react';
 import './../../App.css';
@@ -14,6 +14,7 @@ import {
 import ja from "date-fns/locale/ja";
 import ExtendedDateFnsUtils from '../../utils/extendedDateFunsUtils'
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import ImageTile from '../share/imageTile'
 
 // スタイル
 const useStyles = makeStyles(() => ({
@@ -34,6 +35,7 @@ function Image() {
   return (
     <div className="App">
       <Container>
+      
         <input
           accept="image/*"
           className={classes.input}
@@ -46,13 +48,11 @@ function Image() {
           <Box>全{imageContainer.imgObjects.length}件</Box>
           <Box display='flex' flexWrap='wrap' justifyContent='space-between'>
             {imageContainer.imgObjects.map(i => 
-              <Box width='45%' >
-                <CardMedia
-                  key={i.id}
-                  component="img"
-                  image={i.imageBinary}
+              <Box width='45%' paddingBottom='20px' >
+                <ImageTile
+                  id={i.id}
+                  imageBinary={i.imageBinary}
                 />
-
                 <KeyboardDatePicker
                   margin="normal"
                   id="date-picker-dialog"
@@ -69,6 +69,8 @@ function Image() {
 
                 <TextField
                   id="amount"
+                  type="tel"
+                  inputMode="decimal"
                   defaultValue={i.amount}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">¥</InputAdornment>,
