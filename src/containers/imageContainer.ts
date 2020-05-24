@@ -58,7 +58,7 @@ const useImageContainer = () => {
 
     // テキスト変更
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, imgObject: ImgObject) => {
-        switch(e.target.name) {
+        switch(e.target.id) {
             case "amount": imgObject.amount = e.target.value; break;
             case "note": imgObject.note = e.target.value; break;
             default: return;

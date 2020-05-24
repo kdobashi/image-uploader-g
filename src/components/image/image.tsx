@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ja from "date-fns/locale/ja";
@@ -69,20 +68,17 @@ function Image() {
                 />
 
                 <TextField
-                  label=""
-                  id=""
-                  name="amount"
-                  value={i.amount}
+                  id="amount"
+                  defaultValue={i.amount}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">¥</InputAdornment>,
                   }}
                   onChange={e => imageContainer.handleTextChange(e, i)}
                 />
+
                 <TextField
-                  label=""
-                  id=""
-                  name="note"
-                  value={i.note}
+                  id="note"
+                  defaultValue={i.note}
                   InputProps={{
                     startAdornment: <InputAdornment position="start"><CommentOutlinedIcon /></InputAdornment>,
                   }}
