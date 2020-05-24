@@ -1,9 +1,9 @@
-import { CardMedia, makeStyles, Container, Box } from '@material-ui/core';
+import { CardMedia, makeStyles, Container, Box, TextField, InputAdornment } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import React, { useState, useEffect } from 'react';
-import './../App.css';
-import { ImageDbLogic, ImgObject } from '../dblogic/imageDbLogic';
-import { ImageContainer } from '../containers/imageContainer';
+import './../../App.css';
+import { ImageDbLogic, ImgObject } from '../../dblogic/imageDbLogic';
+import { ImageContainer } from '../../containers/imageContainer';
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -13,8 +13,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ja from "date-fns/locale/ja";
-import ExtendedDateFnsUtils from '../utils/extendedDateFunsUtils'
-import CircularIndeterminate from '../utils/indicator';
+import ExtendedDateFnsUtils from '../../utils/extendedDateFunsUtils'
+import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
 // スタイル
 const useStyles = makeStyles(() => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   
 }));
 
-function App() {
+function Image() {
   const classes = useStyles();
   const imageContainer = ImageContainer.useContainer();
 
@@ -57,7 +57,7 @@ function App() {
                 <KeyboardDatePicker
                   margin="normal"
                   id="date-picker-dialog"
-                  label="使用日"
+                  label=""
                   format="yyyy/MM/dd"
                   okLabel="決定"
                   cancelLabel="キャンセル"
@@ -68,7 +68,26 @@ function App() {
                   }}
                 />
 
-                
+                <TextField
+                  label=""
+                  id=""
+                  name="amount"
+                  value={i.amount}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">¥</InputAdornment>,
+                  }}
+                  onChange={e => imageContainer.handleTextChange(e, i)}
+                />
+                <TextField
+                  label=""
+                  id=""
+                  name="note"
+                  value={i.note}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"><CommentOutlinedIcon /></InputAdornment>,
+                  }}
+                  onChange={e => imageContainer.handleTextChange(e, i)}
+                />
 
               </Box>
             )}
@@ -79,4 +98,4 @@ function App() {
   );
 }
 
-export default App;
+export default Image;

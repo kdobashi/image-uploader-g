@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createContainer } from 'unstated-next';
 import { ImgObject, ImageDbLogic } from '../dblogic/imageDbLogic';
 import IndicatorStore from '../utils/indicatorStore';
+import { Switch } from '@material-ui/core';
 
 const useImageContainer = () => {
     const [imgObjects, setImgObjects] = useState<Array<ImgObject>>(new Array<ImgObject>());
@@ -45,6 +46,7 @@ const useImageContainer = () => {
     }
     // 日付変更
     const handleDateChange = (date: Date | null, imgObject: ImgObject) => {
+        console.log(date);
         imgObject.date = date;
         ImageDbLogic.getInstance().putSingle(imgObject)
         .then(() => {
@@ -53,11 +55,27 @@ const useImageContainer = () => {
             })
         })
     };
+
+    // テキスト変更
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, imgObject: ImgObject) => {
+        switch(e.target.name) {
+            case "amount": imgObject.amount = e.target.value; break;
+            case "note": imgObject.note = e.target.value; break;
+            default: return;
+        }
+        ImageDbLogic.getInstance().putSingle(imgObject)
+        .then(() => {
+            ImageDbLogic.getInstance().getAll<ImgObject>().then(result => {
+                setImgObjects(result); //getAllするかはあとで再考する
+            })
+        })
+    } 
     
     return {
         addImage,
         getAllImage,
         handleDateChange,
+        handleTextChange,
         imgObjects, setImgObjects,
     };
 }

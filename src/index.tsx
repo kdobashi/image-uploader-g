@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import Image from './components/image/image';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { ImageContainer } from './containers/imageContainer';
@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ImageContainer.Provider>
       <Utility />
-      <App />
+      <Image />
     </ImageContainer.Provider>
   </React.StrictMode>,
   document.getElementById('root')
