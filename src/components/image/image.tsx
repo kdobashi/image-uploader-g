@@ -12,15 +12,34 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import ja from "date-fns/locale/ja";
-import ExtendedDateFnsUtils from '../../utils/extendedDateFunsUtils'
+import ExtendedDateFnsUtils from '../../utils/extendedDateFunsUtils';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
-import ImageTile from '../share/imageTile'
+import ImageTile from '../share/imageTile';
+import AddButtonImage from '../../asset/plus_button.png';
 
 // スタイル
 const useStyles = makeStyles(() => ({
-  input: {
-    display: "block"
+  addFileButton: {
+    position: "fixed",
+    bottom: "20px",
+    right: "5px",
+    zIndex: 1,
+    width: "70px",
+    height: "70px",
+    borderRadius: "50%",
+    backgroundColor: "white",
+    boxShadow: "0 4px 5px 0 rgba(50, 50, 50, 0.75)"
   },
+  inputFileHide: {
+    opacity: 0,
+    appearance: "none",
+    position: "absolute",
+  },
+  icon: {
+    width: "70px",
+    height: "70px",
+    borderRadius: "50%",
+  }
   
 }));
 
@@ -35,15 +54,21 @@ function Image() {
   return (
     <div className="App">
       <Container>
-      
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-          onChange={imageContainer.addImage}
-        />
+        <Button className={classes.addFileButton} component="label">
+          <CardMedia 
+            className={classes.icon}
+            component="img"
+            image={AddButtonImage}
+          />
+          <input
+            accept="image/*"
+            className={classes.inputFileHide}
+            id="contained-button-file"
+            multiple
+            type="file"
+            onChange={imageContainer.addImage}
+          />
+        </Button>
         <MuiPickersUtilsProvider utils={ExtendedDateFnsUtils} locale={ja}>
           <Box>全{imageContainer.imgObjects.length}件</Box>
           <Box display='flex' flexWrap='wrap' justifyContent='space-between'>

@@ -20,12 +20,10 @@ const ImageDialog: React.FC<Props> = (props: Props) => {
                 onClick={onClose}
                 maxWidth={false}
             >
-                <Box>
-                    <CardMedia
-                        component="img"
-                        image={props.imageBinary}
-                    />
-                </Box>
+            <CardMedia
+                component="img"
+                image={props.imageBinary}
+            />
 
             </Dialog>
         </Box>
